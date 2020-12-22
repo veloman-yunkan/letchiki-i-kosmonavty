@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+rm -rf ebook_html
+mkdir ebook_html
+for f in orig_html/*.html
+do
+    iconv -f windows-1251 -t utf-8 -o ebook_html/"$(basename "$f")" "$f"
+done
+
+for f in ebook_html/*.html
+do
+    dos2unix "$f"
+    sed -i 's/windows-1251/utf-8/g' "$f"
+    sed -i 's/<link[^>]\+>//' "$f"
+    sed -i 's/<a name=top><\/a>//' "$f"
+    sed -i 's|<!-- top -->.\+<!-- top2 --></div>||' "$f"
+    sed -i 's|<!-- bottom -->.\+<!-- xbottom -->|</div>|' "$f"
+    sed -i 's/\(.\)<script/\1\n<script/' "$f"
+    sed -i 's/\(.\)<\/script>/\1\n<\/script>/' "$f"
+    sed -i 's/<\/script>\(.\)/<\/script>\n\1/' "$f"
+    sed -i '/^<script/,/^<\/script>/ d' "$f"
+done
+
+sed -i 's/<iframe.\+<\/iframe>//' ebook_html/index.html
+sed -i 's/<a name=top>.\+//' ebook_html/index.html
