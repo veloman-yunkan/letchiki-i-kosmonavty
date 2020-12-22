@@ -25,3 +25,4 @@ sed -i 's/<iframe.\+<\/iframe>//' ebook_html/index.html
 sed -i 's/<a name=top>.\+//' ebook_html/index.html
 
 ebook-convert ebook_html/index.html Letchiki-i-kosmonavty.mobi
+ebook-convert ebook_html/index.html Letchiki-i-kosmonavty.epub
